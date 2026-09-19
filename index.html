@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Carl Bulda | My Portfolio</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Segoe UI,sans-serif;
+    background:linear-gradient(135deg,#050816,#0f172a,#1e3a8a);
+    color:white;
+    overflow-x:hidden;
+}
+
+body:before,
+body:after{
+    content:"";
+    position:fixed;
+    border-radius:50%;
+    filter:blur(140px);
+    z-index:-2;
+}
+
+body:before{
+    width:600px;
+    height:600px;
+    background:#38bdf8;
+    left:-200px;
+    top:-200px;
+    opacity:.15;
+}
+
+body:after{
+    width:600px;
+    height:600px;
+    background:#8b5cf6;
+    right:-200px;
+    bottom:-200px;
+    opacity:.15;
+}
+
+.cursor-glow{
+    position:fixed;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(110,231,255,.15),transparent 70%);
+    pointer-events:none;
+    z-index:-1;
+}
+
+.bubble-container{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.bubble{
+    position:absolute;
+    bottom:-150px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 0 30px rgba(110,231,255,.2);
+    cursor:pointer;
+    animation:floatBubble linear infinite;
+}
+
+@keyframes floatBubble{
+    0%{
+        transform:translateY(0) rotate(0deg);
+        opacity:0;
+    }
+    20%{
+        opacity:.8;
+    }
+    100%{
+        transform:translateY(-120vh) translateX(50px) rotate(360deg);
+        opacity:0;
+    }
+}
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(10,15,30,.75);
+    backdrop-filter:blur(16px);
+    z-index:1000;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color:#6ee7ff;
+}
+
+nav ul{
+    display:flex;
+    gap:20px;
+    list-style:none;
+}
+
+nav a{
+    text-decoration:none;
+    color:white;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#6ee7ff;
+}
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:120px 10%;
+    gap:60px;
+}
+
+.hero h1{
+    font-size:clamp(60px,8vw,110px);
+}
+
+.hero span{
+    color:#6ee7ff;
+}
+
+.hero p{
+    max-width:650px;
+    line-height:1.8;
+    color:#cbd5e1;
+    font-size:18px;
+}
+
+.glass{
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:30px;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.profile{
+    width:380px;
+    height:380px;
+    border-radius:50%;
+    padding:8px;
+    background:linear-gradient(135deg,#6ee7ff,#8b5cf6);
+    animation:float 4s ease-in-out infinite;
+    flex-shrink:0;
+}
+
+.profile img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    background:#111827;
+}
+
+.btn{
+    padding:14px 28px;
+    border:none;
+    border-radius:999px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:20px;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(110,231,255,.2);
+}
+
+.primary{
+    background:#6ee7ff;
+    color:#071018;
+}
+
+section{
+    padding:100px 10%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.section-title h2{
+    font-size:40px;
+}
+
+.cards,
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    padding:30px;
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.02);
+}
+
+.reveal{
+    opacity:0;
+    transform:translateY(60px);
+    transition:1s;
+}
+
+.reveal.active{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.timeline{
+    max-width:900px;
+    margin:auto;
+    border-left:2px solid #6ee7ff;
+    padding-left:30px;
+}
+
+.timeline-item{
+    margin-bottom:35px;
+    position:relative;
+}
+
+.timeline-item:before{
+    content:"";
+    position:absolute;
+    width:14px;
+    height:14px;
+    background:#6ee7ff;
+    border-radius:50%;
+    left:-38px;
+    top:5px;
+    box-shadow:0 0 15px rgba(110,231,255,.6);
+}
+
+.timeline-item h3{
+    margin-bottom:8px;
+    color:#6ee7ff;
+}
+
+.timeline-item p{
+    color:#cbd5e1;
+    line-height:1.7;
+}
+
+/* Achievements Gallery */
+.achievement-card{
+    overflow:hidden;
+    border-radius:25px;
+    transition:.4s;
+}
+
+.achievement-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.achievement-card img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    display:block;
+}
+
+.achievement-info{
+    padding:24px;
+}
+
+.achievement-info h3{
+    color:#6ee7ff;
+    margin-bottom:12px;
+    font-size:24px;
+}
+
+.achievement-info .short-description{
+    color:#cbd5e1;
+    line-height:1.7;
+    min-height:82px;
+}
+
+/* Goal section */
+.goal-box{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:35px;
+    align-items:center;
+    padding:30px;
+}
+
+.goal-image{
+    width:100%;
+    min-height:300px;
+    border-radius:25px;
+    overflow:hidden;
+    background:rgba(255,255,255,.04);
+}
+
+.goal-image img{
+    width:100%;
+    height:100%;
+    min-height:300px;
+    object-fit:cover;
+    display:block;
+}
+
+.goal-content h3{
+    color:#6ee7ff;
+    font-size:28px;
+    margin-bottom:15px;
+}
+
+.goal-content p{
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+/* Modal */
+.modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.85);
+    backdrop-filter:blur(8px);
+    z-index:9999;
+    padding:20px;
+}
+
+.modal-content{
+    width:min(90%,600px);
+    padding:35px;
+    border-radius:25px;
+    background:#101828;
+    border:1px solid rgba(255,255,255,.08);
+    animation:pop .4s ease;
+}
+
+.modal-content h2{
+    color:#6ee7ff;
+}
+
+.modal-content p{
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+.close-x{
+    float:right;
+    background:transparent;
+    color:white;
+    border:none;
+    font-size:28px;
+    cursor:pointer;
+}
+
+@keyframes pop{
+    from{
+        opacity:0;
+        transform:scale(.6);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes float{
+    50%{
+        transform:translateY(-18px);
+    }
+}
+
+@media(max-width:900px){
+    .hero{
+        flex-direction:column-reverse;
+        text-align:center;
+    }
+
+    .hero p{
+        margin:auto;
+    }
+
+    nav ul{
+        display:none;
+    }
+
+    .profile{
+        width:280px;
+        height:280px;
+    }
+
+    .goal-box{
+        grid-template-columns:1fr;
+    }
+
+    section{
+        padding:80px 7%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor-glow"></div>
+<div class="bubble-container" id="bubbles"></div>
+
+<nav>
+    <div class="logo">JC.</div>
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#faith">Faith</a></li>
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#goals">Goals</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div>
+        <h1>John Carl <span>Bulda.</span></h1>
+
+        <p>
+            Student • Dreamer • Child of God • From Baguio City.
+            A premium interactive portfolio featuring my life journey,
+            faith, goals, achievements, inspirations, and future dreams.
+        </p>
+
+        <button class="btn primary" onclick="motivate()">
+            Motivate Me
+        </button>
+    </div>
+
+    <div class="profile">
+        <!-- PROFILE IMAGE:
+             You can replace this filename with your own profile photo. -->
+        <img src="Messenger_creation_1741867550360986.jpeg" alt="John Carl Bulda">
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="reveal">
+    <div class="section-title">
+        <h2>About Me</h2>
+    </div>
+
+    <div class="glass card">
+        <p><b>📍 Hometown:</b> Baguio City</p>
+        <br>
+
+        <p><b>🎂 Birthday:</b> July 15, 2009</p>
+        <br>
+
+        <p><b>⛪ Church:</b> Calvary Baptist Church</p>
+        <br>
+
+        <p>
+            I am a student who still seeks to grow and be the best person
+            than my past. I still have a lot to learn and achieve, and I know
+            I can achieve those things through Christ who strengthens me.
+        </p>
+    </div>
+</section>
+
+<!-- FAITH -->
+<section id="faith" class="reveal">
+    <div class="section-title">
+        <h2>Faith Journey</h2>
+    </div>
+
+    <div class="cards">
+        <div class="glass card">
+            📖 Philippians 4:13
+        </div>
+
+        <div class="glass card">
+            🙏 Trust God's Timing
+        </div>
+
+        <div class="glass card">
+            ✨ God has His own way. You may not understand it yet,
+            but soon.
+        </div>
+    </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey" class="reveal">
+    <div class="section-title">
+        <h2>My Journey</h2>
+    </div>
+
+    <div class="timeline">
+
+        <div class="timeline-item">
+            <h3>School Life</h3>
+            <p>
+                Learning and growing every day while developing my skills,
+                discipline, and confidence.
+            </p>
+        </div>
+
+        <div class="timeline-item">
+            <h3>Achievements</h3>
+            <p>
+                Building skills and confidence through school activities,
+                recognitions, and experiences.
+            </p>
+        </div>
+
+        <div class="timeline-item">
+            <h3>Future Goals</h3>
+            <p>
+                Creating a meaningful future and becoming the person
+                God wants me to be.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- GOALS -->
+<section id="goals" class="reveal">
+    <div class="section-title">
+        <h2>My Future Goals</h2>
+    </div>
+
+    <div class="glass goal-box">
+
+        <div class="goal-image">
+            <!--
+                GOAL IMAGE:
+                Replace "your-goal-image.jpg" with an image related
+                to your future dream or career.
+            -->
+            <img src="3150399.jpg" alt="My Future Goal">
+        </div>
+
+        <div class="goal-content">
+            <h3>My Dream & Future</h3>
+
+            <!-- SHORT DESCRIPTION:
+                 Write your short goal description here. -->
+            <p>
+                I want to build a successful and meaningful future,
+                continue learning, help others, and use my talents
+                for something that has a positive impact.
+            </p>
+
+            <button class="btn primary" onclick="showAchievement(
+                'My Future Goal',
+                'To pursue a career in psychology and contribute to understanding human behavior, mental health, and well-being. I aim to continuously develop my knowledge and skills to help individuals overcome challenges, promote positive mental health, and make a meaningful impact on society.'
+            )">
+                Read My Goal
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="reveal">
+    <div class="section-title">
+        <h2>Achievements Gallery</h2>
+    </div>
+
+    <div class="gallery">
+
+        <!-- ACHIEVEMENT 1 -->
+        <div class="glass achievement-card">
+            <img
+                src="Messenger_creation_00D34F80-1172-4F4D-B501-F2DDDF532524.png"
+                alt="Moving-Up Ceremony">
+
+            <div class="achievement-info">
+                <h3>Moving-Up Ceremony</h3>
+
+                <!-- SHORT DESCRIPTION: EDIT THIS -->
+                <p class="short-description">
+                    Graduating from Junior High School and reaching an
+                    important milestone in my educational journey.
+                </p>
+
+                <!-- FULL DESCRIPTION: EDIT THE TEXT INSIDE showAchievement() -->
+                <button class="btn primary"
+                    onclick="showAchievement(
+                    'Moving-Up Ceremony',
+                    'This photo represents an important milestone in my life as I completed Junior High School. It reminds me of the lessons, friendships, challenges, and experiences that helped me grow and prepare for the next chapter of my education.'
+                    )">
+                    Read More
+                </button>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENT 2 -->
+        <div class="glass achievement-card">
+            <img
+                src="IMG_20260621_105329_128.jpg"
+                alt="Academic Recognition">
+
+            <div class="achievement-info">
+                <h3>Academic Recognition</h3>
+
+                <!-- SHORT DESCRIPTION: EDIT THIS -->
+                <p class="short-description">
+                    A moment of recognition that represents hard work,
+                    dedication, and perseverance.
+                </p>
+
+                <!-- FULL DESCRIPTION: EDIT THE TEXT INSIDE showAchievement() -->
+                <button class="btn primary"
+                    onclick="showAchievement(
+                    'Academic Recognition',
+                    'This achievement represents the effort and dedication I gave to my studies. It reminds me that consistent work, patience, discipline, and faith can help me continue improving and reaching my goals.'
+                    )">
+                    Read More
+                </button>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENT 3 -->
+        <div class="glass achievement-card">
+            <img
+                src="received_1252980340246801.jpeg"
+                alt="Teenracy Participation">
+
+            <div class="achievement-info">
+                <h3>Teenracy Participation</h3>
+
+                <!-- SHORT DESCRIPTION: EDIT THIS -->
+                <p class="short-description">
+                    Participating in a youth activity that helped develop
+                    confidence, teamwork, and communication skills.
+                </p>
+
+                <!-- FULL DESCRIPTION: EDIT THE TEXT INSIDE showAchievement() -->
+                <button class="btn primary"
+                    onclick="showAchievement(
+                    'Teenracy Participation',
+                    'This experience gave me an opportunity to learn, participate, communicate, and build confidence. It also taught me the value of teamwork and being willing to step outside my comfort zone.'
+                    )">
+                    Read More
+                </button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="reveal">
+    <div class="section-title">
+        <h2>Contact Me</h2>
+    </div>
+
+    <div class="glass card">
+        <p><b>Email:</b></p>
+        <br>
+        <p>johncarlbulda@gmail.com</p>
+    </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="close-x" onclick="closeModal()">×</button>
+
+        <h2 id="modalTitle">Message</h2>
+        <br>
+
+        <p id="modalText"></p>
+
+        <br>
+
+        <button class="btn primary" onclick="closeModal()">
+            Close
+        </button>
+    </div>
+</div>
+
+<script>
+/* Cursor glow */
+const glow = document.querySelector('.cursor-glow');
+
+document.addEventListener('mousemove', e => {
+    glow.style.left = (e.clientX - 150) + 'px';
+    glow.style.top = (e.clientY - 150) + 'px';
+});
+
+/* Floating bubbles */
+const bubbleContainer = document.getElementById('bubbles');
+
+for(let i = 0; i < 20; i++){
+    const b = document.createElement('div');
+
+    b.className = 'bubble';
+
+    const s = Math.random() * 90 + 40;
+
+    b.style.width = s + 'px';
+    b.style.height = s + 'px';
+    b.style.left = Math.random() * 100 + 'vw';
+    b.style.animationDuration = (12 + Math.random() * 15) + 's';
+
+    b.onclick = () => motivate();
+
+    bubbleContainer.appendChild(b);
+}
+
+/* Scroll reveal */
+const reveals = document.querySelectorAll('.reveal');
+
+function revealSections(){
+    reveals.forEach(el => {
+        if(el.getBoundingClientRect().top < window.innerHeight - 100){
+            el.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', revealSections);
+window.addEventListener('load', revealSections);
+
+/* Motivation messages */
+const msgs = [
+    "God has a purpose for your life.",
+    "Believe, Pray, Achieve.",
+    "Never stop growing.",
+    "Keep moving forward.",
+    "Your future is brighter than your fears."
+];
+
+function motivate(){
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalTitle').innerText = 'Motivation';
+    document.getElementById('modalText').innerText =
+        msgs[Math.floor(Math.random() * msgs.length)];
+}
+
+/* Achievement / Goal popup */
+function showAchievement(title, description){
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalText').innerText = description;
+}
+
+/* Close popup */
+function closeModal(){
+    document.getElementById('modal').style.display = 'none';
+}
+
+/* Close popup with Escape key */
+document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+        closeModal();
+    }
+});
+</script>
+
+</body>
+</html>
